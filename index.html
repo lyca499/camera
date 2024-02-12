@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Camera Capture & Preview</title>
+    <style>
+      .page {
+        display: none;
+      }
+      .active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="capturePage" class="page active">
+      <h2>Capture Image</h2>
+      <input type="file" accept="image/*" capture="environment" />
+
+      <button id="captureBtn">Capture Image</button>
+    </div>
+
+    <div id="previewPage" class="page">
+      <h2>Image Preview</h2>
+      <img
+        id="previewImg"
+        src=""
+        alt="Preview Image"
+        style="max-width: 100%; height: auto"
+      />
+      <button onclick="goBack()">Capture Another</button>
+    </div>
+
+    <script>
+      document.getElementById("captureBtn").onclick = function () {
+        document.getElementById("fileInput").click();
+      };
+
+      document.getElementById("fileInput").onchange = function (event) {
+        const [file] = event.target.files;
+        if (file) {
+          const previewImg = document.getElementById("previewImg");
+          previewImg.src = URL.createObjectURL(file);
+          switchPage("previewPage");
+        }
+      };
+
+      function switchPage(pageId) {
+        const pages = document.querySelectorAll(".page");
+        pages.forEach((page) => {
+          page.classList.remove("active");
+        });
+        document.getElementById(pageId).classList.add("active");
+      }
+
+      function goBack() {
+        switchPage("capturePage");
+        // Clear the input value so the same file can be selected again
+        document.getElementById("fileInput").value = "";
+      }
+    </script>
+  </body>
+</html>
