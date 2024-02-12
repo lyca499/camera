@@ -1,59 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Camera Capture & Preview</title>
     <style>
-      .active {
-        display: block;
-      }
+        .page { display: none; }
+        .active { display: block; }
     </style>
-  </head>
-  <body>
-    <div id="capturePage" class="page active">
-      <h2>Capture Image</h2>
-      <input
-        type="file"
-        accept="image/*"
-        capture="environment"
-        id="fileInput"
-        style="display: none"
-      />
-      <button id="captureBtn">Capture Image</button>
-    </div>
+</head>
+<body>
 
-    <div id="previewPage" class="page">
-      <h2>Image Preview</h2>
-      <img
-        id="previewImg"
-        src=""
-        alt="Preview Image"
-        style="max-width: 100%; height: auto"
-      />
-    </div>
+<div id="capturePage" class="page active">
+    <h2>Capture Image</h2>
+    <input type="file" accept="image/*" capture="environment" id="fileInput" style="display: none;">
+    <button id="captureBtn">Capture Image</button>
+</div>
 
-    <script>
-      document.getElementById("captureBtn").onclick = function () {
+<div id="previewPage" class="page">
+    <h2>Image Preview</h2>
+    <img id="previewImg" src="" alt="Preview Image" style="max-width: 100%; height: auto;">
+    <button onclick="goBack()">Capture Another</button>
+</div>
+
+<script>
+    document.getElementById('captureBtn').onclick = function() {
         // Simple mobile detection
-        if (
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          )
-        ) {
-          // Trigger file input on mobile devices
-          document.getElementById("fileInput").click();
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // Trigger file input on mobile devices
+            document.getElementById('fileInput').click();
         } else {
-          alert("Camera capture is optimized for mobile devices.");
+            alert('Camera capture is optimized for mobile devices.');
         }
-      };
+    };
 
-      document.getElementById("fileInput").onchange = function (event) {
+    document.getElementById('fileInput').onchange = function(event) {
         const [file] = event.target.files;
         if (file) {
-          const previewImg = document.getElementById("previewImg");
-          previewImg.src = URL.createObjectURL(file);
-          switchPage("previewPage");
+            const previewImg = document.getElementById('previewImg');
+            previewImg.src = URL.createObjectURL(file);
+            switchPage('previewPage');
         }
-      };
-    </script>
-  </body>
+    };
+
+    function switchPage(pageId) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => {
+            page.classList.remove('active');
+        });
+        document.getElementById(pageId).classList.add('active');
+    }
+
+    function goBack() {
+        switchPage('capturePage');
+        document.getElementById('fileInput').value = ''; // Clear the input
+    }
+</script>
+
+</body>
 </html>
